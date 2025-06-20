@@ -40,6 +40,40 @@ const MobileFocused = ({
     }
   }, [startMicImmediately]);
 
+  //Check for browser support
+  useEffect(() => {
+    console.log(
+      "🔍 Browser supports speech recognition:",
+      browserSupportsSpeechRecognition
+    );
+    if (!browserSupportsSpeechRecognition) {
+      console.warn("🚫 Speech recognition not supported in this browser.");
+    }
+  }, [browserSupportsSpeechRecognition]);
+
+  //check if transcript is changing
+  useEffect(() => {
+    console.log("📱 Local transcript changed:", localTranscript);
+  }, [localTranscript]);
+
+  //track errors
+  useEffect(() => {
+    SpeechRecognition.onstart = () =>
+      console.log("✅ Speech recognition started.");
+    SpeechRecognition.onend = () => console.log("🧼 Speech recognition ended.");
+    SpeechRecognition.onerror = (event) =>
+      console.error("❌ Speech recognition error:", event.error);
+    SpeechRecognition.onresult = (event) =>
+      console.log("📥 Speech result received:", event.results);
+
+    return () => {
+      SpeechRecognition.onstart = null;
+      SpeechRecognition.onend = null;
+      SpeechRecognition.onerror = null;
+      SpeechRecognition.onresult = null;
+    };
+  }, []);
+
   return (
     <div className="flex flex-col w-full bg-white dark:bg-[#202124] min-h-screen">
       {/* Back + Search Bar */}

@@ -60,6 +60,40 @@ const SearchBar = ({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setIsFocused]);
 
+  // check if browser supports
+  useEffect(() => {
+    console.log(
+      "🔍 Browser supports speech recognition:",
+      browserSupportsSpeechRecognition
+    );
+    if (!browserSupportsSpeechRecognition) {
+      console.warn("🚫 Speech recognition not supported in this browser.");
+    }
+  }, [browserSupportsSpeechRecognition]);
+
+  //check if transcript is changing
+  useEffect(() => {
+    console.log("✏️ Transcript changed:", transcript);
+  }, [transcript]);
+
+  //track errors
+  useEffect(() => {
+    SpeechRecognition.onstart = () =>
+      console.log("✅ Speech recognition started.");
+    SpeechRecognition.onend = () => console.log("🧼 Speech recognition ended.");
+    SpeechRecognition.onerror = (event) =>
+      console.error("❌ Speech recognition error:", event.error);
+    SpeechRecognition.onresult = (event) =>
+      console.log("📥 Speech result received:", event.results);
+
+    return () => {
+      SpeechRecognition.onstart = null;
+      SpeechRecognition.onend = null;
+      SpeechRecognition.onerror = null;
+      SpeechRecognition.onresult = null;
+    };
+  }, []);
+
   return (
     <div className="flex flex-col items-center w-full p-[20px] relative z-10">
       {isFocused ? (
@@ -91,9 +125,13 @@ const SearchBar = ({
                     setIsFocused(true); // Switch to mobile view
                   } else {
                     if (listening) {
+                      console.log("🛑 Stopping speech recognition...");
                       SpeechRecognition.stopListening();
                     } else {
                       resetTranscript();
+                      console.log(
+                        "🎙️ Attempting to start speech recognition..."
+                      );
                       SpeechRecognition.startListening({ continuous: true });
                     }
                   }
