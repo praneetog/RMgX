@@ -80,14 +80,6 @@ A polished and responsive Google homepage clone that brings together a clean UI,
 
 ---
 
-## 📱 Responsive Preview
-
-| Desktop | Mobile Focused View |
-|--------|---------------------|
-| ![desktop](https://via.placeholder.com/400x200.png?text=Desktop+View) | ![mobile](https://via.placeholder.com/200x400.png?text=Mobile+Focused+Mic+View) |
-
----
-
 ## ⚠️ Voice Recognition Notes
 
 > Voice recognition using the Web Speech API is supported **only** on:
