@@ -10,6 +10,8 @@ import MobileFocused from "../components/MobileFocused";
 const Home = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [transcript, setTranscript] = useState("");
+  const [startMicImmediately, setStartMicImmediately] = useState(false);
 
   // Detect if screen is below md
   useEffect(() => {
@@ -24,7 +26,15 @@ const Home = () => {
   }, []);
 
   if (isMobile && isFocused) {
-    return <MobileFocused setIsFocused={setIsFocused} />;
+    return (
+      <MobileFocused
+        setIsFocused={setIsFocused}
+        transcript={transcript}
+        setTranscript={setTranscript}
+        startMicImmediately={startMicImmediately}
+        setStartMicImmediately={setStartMicImmediately}
+      />
+    );
   }
 
   return (
@@ -35,13 +45,19 @@ const Home = () => {
           !isFocused ? "md:mb-20" : "mb-0"
         }`}
       >
-        <div className="flex items-end justify-center min-h-[108px] md:min-h-[150px] h-[calc(100%-560px)] max-h-[290px]">
-          <div className="min-h-[56px] md:min-h-[92px]">
+        <div className="flex items-end justify-center min-h-[] md:min-h-[25vh] h-[calc(100%-560px)]">
+          <div className="h-[56px] md:h-[92px]">
             <Logo />
           </div>
         </div>
 
-        <SearchBar isFocused={isFocused} setIsFocused={setIsFocused} />
+        <SearchBar
+          isFocused={isFocused}
+          setIsFocused={setIsFocused}
+          isMobile={isMobile}
+          setTranscript={setTranscript}
+          setStartMicImmediately={setStartMicImmediately}
+        />
 
         {!isFocused && (
           <div className="mt-8 text-center">

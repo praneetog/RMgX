@@ -1,13 +1,38 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { IoMdSearch } from "react-icons/io";
 import { FaMicrophone } from "react-icons/fa";
 import { FiCamera } from "react-icons/fi";
 import Button from "./Button";
 import TrendingSearches from "./TrendingSearches";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
-const SearchBar = ({ isFocused, setIsFocused }) => {
+const SearchBar = ({
+  isFocused,
+  setIsFocused,
+  isMobile,
+  setTranscript,
+  setStartMicImmediately,
+}) => {
   const wrapperRef = useRef(null);
   const inputRef = useRef(null);
+  const [inputValue, setInputValue] = useState(""); //for voice input
+
+  // Speech Recognition
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+  } = useSpeechRecognition();
+
+  useEffect(() => {
+    if (transcript) {
+      setInputValue(transcript);
+      setTranscript(transcript); // <- sync it to parent
+    }
+  }, [transcript]);
 
   // Auto-focus input when focused
   useEffect(() => {
@@ -54,11 +79,36 @@ const SearchBar = ({ isFocused, setIsFocused }) => {
               ref={inputRef}
               type="text"
               className="flex-grow bg-transparent focus:outline-none text-sm text-[#202124] dark:text-[#e8eaed]"
-              placeholder=""
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
               onFocus={() => setIsFocused(true)}
             />
             <div className="flex items-center gap-4 ml-4 pr-2">
-              <FaMicrophone className="text-[#474747] dark:text-[#bfbfbf] text-xl cursor-pointer" />
+              <button
+                onClick={() => {
+                  if (isMobile) {
+                    setStartMicImmediately(true); // Tell MobileFocused to start mic
+                    setIsFocused(true); // Switch to mobile view
+                  } else {
+                    if (listening) {
+                      SpeechRecognition.stopListening();
+                    } else {
+                      resetTranscript();
+                      SpeechRecognition.startListening({ continuous: true });
+                    }
+                  }
+                }}
+                className="focus:outline-none"
+                title={listening ? "Stop listening" : "Start voice input"}
+              >
+                <FaMicrophone
+                  className={`text-xl cursor-pointer ${
+                    listening
+                      ? "text-blue-500"
+                      : "text-[#474747] dark:text-[#bfbfbf]"
+                  }`}
+                />
+              </button>
               <FiCamera className="text-[#474747] dark:text-[#bfbfbf] text-xl cursor-pointer" />
             </div>
           </div>
@@ -101,14 +151,39 @@ const SearchBar = ({ isFocused, setIsFocused }) => {
                 ref={inputRef}
                 type="text"
                 className="bg-transparent w-full focus:outline-none text-sm text-[#202124] dark:text-[#e8eaed]"
-                placeholder=""
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
                 onFocus={() => setIsFocused(true)}
               />
             </div>
 
             {/* Mic + Camera */}
             <div className="flex items-center gap-5 ml-4 pr-6">
-              <FaMicrophone className="text-[#474747] dark:text-[#bfbfbf] text-xl cursor-pointer" />
+              <button
+                onClick={() => {
+                  if (isMobile) {
+                    setStartMicImmediately(true); // Tell MobileFocused to start mic
+                    setIsFocused(true); // Switch to mobile view
+                  } else {
+                    if (listening) {
+                      SpeechRecognition.stopListening();
+                    } else {
+                      resetTranscript();
+                      SpeechRecognition.startListening({ continuous: true });
+                    }
+                  }
+                }}
+                className="focus:outline-none"
+                title={listening ? "Stop listening" : "Start voice input"}
+              >
+                <FaMicrophone
+                  className={`text-xl cursor-pointer ${
+                    listening
+                      ? "text-blue-500"
+                      : "text-[#474747] dark:text-[#bfbfbf]"
+                  }`}
+                />
+              </button>
               <FiCamera className="text-[#474747] dark:text-[#bfbfbf] text-xl cursor-pointer" />
             </div>
           </div>

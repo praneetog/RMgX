@@ -5,7 +5,7 @@ const SearchSettingsMenu = () => {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="absolute bottom-10 right-4 bg-white dark:bg-[#303134] border border-gray-200 dark:border-[#5f6368] rounded-xl m-2 shadow-xl w-40 text-sm font-[Arial] z-50">
+    <div className="absolute bottom-20 right-4 bg-white dark:bg-[#303134] border border-gray-200 dark:border-[#5f6368] rounded-xl m-2 shadow-xl w-40 text-sm font-[Arial] z-50">
       <ul className="text-[#202124] dark:text-[#e8eaed] divide-y divide-gray-200 dark:divide-[#5f6368]">
         {[
           "Search settings",
