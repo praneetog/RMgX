@@ -90,7 +90,3 @@ Despite best efforts, on **deployed environments** (Vercel/Render), the micropho
 - User-denied mic permissions
 - System restrictions (Windows/macOS privacy)
 - Browser limitations
-
----
-
-**Made with 💻 by [@praneetog](https://github.com/praneetog)**
