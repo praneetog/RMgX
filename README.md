@@ -17,17 +17,6 @@ A polished and responsive Google homepage clone that brings together a clean UI,
 - React `useRef` and `useState` for real-time input control
 - Instant focus on search interaction
 
-### 🎙️ Voice Recognition Integration
-- Integrated with [`react-speech-recognition`](https://www.npmjs.com/package/react-speech-recognition)
-- Click the mic to **speak your query**
-- Automatically fills input with recognized text
-- Gracefully handles start/stop mic states
-
-> ⚠️ **Note:** Voice recognition works flawlessly in **local development** but may not function on hosted versions due to:
-> - System mic permission conflicts
-> - Chrome-only support (desktop)
-> - HTTPS restrictions or user privacy settings
-
 ### 📱 Responsive Design
 - Fully mobile-friendly layout
 - Automatically switches to a custom **mobile view** with a back button and trending searches
@@ -79,14 +68,3 @@ A polished and responsive Google homepage clone that brings together a clean UI,
 - 🚫 Prevents redundant mic triggers and multiple listening states
 
 ---
-
-## ⚠️ Voice Recognition Notes
-
-> Voice recognition using the Web Speech API is supported **only** on:
-> - ✅ Desktop Chrome over HTTPS or `localhost`
-> - ❌ Not supported on Firefox, Safari, or most mobile browsers
-
-Despite best efforts, on **deployed environments** (Vercel/Render), the microphone may not activate due to:
-- User-denied mic permissions
-- System restrictions (Windows/macOS privacy)
-- Browser limitations
